@@ -9,7 +9,9 @@ function setuser(user){
 };
 function getuser(token){
     if (!token) return null;
+    console.log(token);
     return jwt.verify(token,secret);
+    
     
 };
 
