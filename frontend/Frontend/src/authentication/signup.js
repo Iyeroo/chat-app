@@ -20,7 +20,7 @@ function App() {
     setIsSubmit(true);
     
     
-    const {data}= await axios.post("http://localhost:150/api/signup",formValues
+    const {data}= await axios.post("http://localhost:200/api/signup",formValues
   )
 console.log(data);};
 

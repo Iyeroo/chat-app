@@ -25,7 +25,7 @@ const MyChats = ({ fetchAgain }) => {
         },
       };
 
-      const { data } = await axios.get("http://localhost:150/fetchall", config);
+      const { data } = await axios.get("http://localhost:200/fetchall", config);
       setChats(data);
     } catch (error) {
       toast({

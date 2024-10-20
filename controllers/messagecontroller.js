@@ -31,23 +31,34 @@ const sendMessages=async(req,res)=>{
       }
     
 }
-const allMessages=async(req,res)=>{
-  
-    try {
-      const messages = await Message.find({ chat: req.params.chatId })
-        .populate("sender", "name mobile moodleid")
-        .populate("chat");
-      res.json(messages);
-    } catch (error) {
-      res.status(400);
-      throw new Error(error.message);
+const allMessages = async (req, res) => {
+  try {
+    const chatId = req.params.chatId; // Get chatId from the request params
+
+    if (!chatId) {
+      return res.status(400).json({ message: "chatId is required" });
     }
-}
+
+   // console.log('Fetching messages for chatId:', chatId);
+
+    // Find messages based on chatId
+    const messages = await Message.find({ chat: chatId })
+      .populate("sender", "name mobile moodleid")
+      .populate("chat");
+
+    //console.log('Fetched messages:', messages);
+
+    if (messages.length === 0) {
+      console.log('No messages found for the given chatId');
+    }
+
+    res.json(messages); // Return the messages as the response
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    res.status(400);}}
 
 
-
-
-
+  
 
 
 

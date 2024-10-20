@@ -20,7 +20,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-const PORT = 150;
+const PORT = 200;
 const path = require("path");
 const { type } = require("os");
 connectmongodb("mongodb://127.0.0.1:27017/login")
@@ -87,6 +87,35 @@ app.use((req, res, next) => {
 app.get("/home", (req, res) => {
   return res.render("chat.ejs");
 });
-app.listen(PORT, () => {
+const server=app.listen(PORT, () => {
   console.log("server started");
+});
+const io=require('socket.io')(server,{
+  pingTimeout:60000,
+  cors:{
+    origin:"*",
+  }
+  
+})
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('setup', (userData) => {
+    socket.join(userData._id);
+    console.log(userData._id);
+    socket.emit("connected");
+    socket.on("join chat",(room)=>{
+      socket.join(room);
+      console.log("user joined room"+room)
+    })
+    socket.on("new message",(newMessageRecieved)=>{
+      var chat=newMessageRecieved.chat;
+      if(!chat.users) return console.log("chat.users is not defined");
+      chat.users.forEach((user)=>{
+        if(user._id==newMessageRecieved.sender._id) return;
+        socket.in(user._id).emit("message recieved",newMessageRecieved)
+      })
+
+    })
+
+})
 });
