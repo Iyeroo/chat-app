@@ -58,7 +58,7 @@ const {isOpen,onOpen,onClose}=useDisclosure();
 
         }
         console.log(user.token);
-        const {data}=await axios.get(`http://localhost:200/allusers?search=${search}`,config);
+        const {data}=await axios.get(`http://localhost:500/allusers?search=${search}`,config);
         setLoading(false);
         setSearchResult(data);
       }catch(error){
@@ -83,7 +83,7 @@ const {isOpen,onOpen,onClose}=useDisclosure();
             Authorization: `Bearer ${user.token}`,
           },
         };
-        const { data } = await axios.post(`http://localhost:200/api/chat`, { userId }, config);
+        const { data } = await axios.post(`http://localhost:500/api/chat`, { userId }, config);
   
         if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
         console.log(chats)

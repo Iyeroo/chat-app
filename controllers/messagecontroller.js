@@ -1,6 +1,7 @@
 const Message = require("../models/messageModel");
 const User = require("../models/usermode");
 const Chat = require("../models/chattingmodel");
+const mongoose = require('mongoose');
 const sendMessages=async(req,res)=>{
     const {content,chatId}=req.body;
     if(!content||!chatId){
@@ -33,29 +34,29 @@ const sendMessages=async(req,res)=>{
 }
 const allMessages = async (req, res) => {
   try {
-    const chatId = req.params.chatId; // Get chatId from the request params
+    const { chatId } = req.params;
 
-    if (!chatId) {
-      return res.status(400).json({ message: "chatId is required" });
+    // Check if chatId is present and is a valid ObjectId
+    if (!chatId || !mongoose.Types.ObjectId.isValid(chatId)) {
+      return res.status(400).json({ message: "A valid chatId is required" });
     }
 
-   // console.log('Fetching messages for chatId:', chatId);
-
-    // Find messages based on chatId
+    // Fetch messages associated with the chatId
     const messages = await Message.find({ chat: chatId })
       .populate("sender", "name mobile moodleid")
       .populate("chat");
 
-    //console.log('Fetched messages:', messages);
-
-    if (messages.length === 0) {
+    if (!messages.length) {
       console.log('No messages found for the given chatId');
     }
 
-    res.json(messages); // Return the messages as the response
+    res.json(messages);
   } catch (error) {
     console.error('Error fetching messages:', error);
-    res.status(400);}}
+    res.status(500).json({ message: "Error fetching messages" });
+  }
+};
+
 
 
   

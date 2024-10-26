@@ -21,9 +21,9 @@ const Chatpage=()=>{
     p="5px 10px 5px 10px"
     borderWidth="5px"
     borderStyle="solid">
-  {user && <MyChats/>} 
+  {user && <MyChats fetchAgain={fetchAgain} />} 
    
-  {user && <Chatbox/>}
+  {user && <Chatbox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}/>}
 </Box>
 
     
