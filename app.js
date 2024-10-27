@@ -66,27 +66,20 @@ app.post("/group", protect, user_route);
 app.put("/rename", protect, user_route);
 app.put("/addtogroup", protect, user_route);
 app.put("/removefromgroup", protect, user_route);
-app.get("/login", (Req, res) => {
-  return res.render("login");
-});
-app.get("/signup", (req, res) => {
-  return res.render("signup.ejs");
-});
+
 app.post("/api/message",protect,user_route);
 app.get("/api/message/:chatId",protect,user_route);
 app.use((req, res, next) => {
   console.log(req);
   const useruid = req.cookies?.uid;
-  if (!useruid) return res.redirect("/login");
   const user = getuser(useruid);
 
-  if (!user) return res.redirect("/login");
+  
   req.user = user;
   next();
 });
-app.get("/home", (req, res) => {
-  return res.render("chat.ejs");
-});
+
+
 const server=app.listen(PORT, () => {
   console.log("server started");
 });
@@ -119,3 +112,15 @@ io.on('connection', (socket) => {
 
 })
 });
+const NODE_ENV="production";
+const _dirname1=path.resolve();
+if(NODE_ENV=="production"){
+  app.use(express.static(path.join(_dirname1,"frontend","Frontend","build")));
+  app.get("*",(req,res)=>{
+    res.sendFile(path.resolve(_dirname1,"frontend","Frontend","build","index.html"))
+  })
+}
+else{app.get("/",(req,res)=>{
+res.send("api running in succes")
+})
+}

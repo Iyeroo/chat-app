@@ -23,7 +23,7 @@ const register=async(req,res)=>{
          });
         
          
-        return res.redirect("chat.ejs"); 
+        
     }
     catch(error){
         return res.status(400).json({message:error.message});
@@ -54,10 +54,7 @@ _id: user[0]._id.toString(),
 
             
         }
-        if(!user) return res.render("login",{
-            error:"invalid mobile or moodleid"
-    
-        })
+       
         
       
     }

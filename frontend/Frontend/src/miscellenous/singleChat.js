@@ -2,7 +2,7 @@ import { IconButton, useToast, Spinner } from "@chakra-ui/react";
 import { FormControl } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/react";
 import { Box, Text } from "@chakra-ui/layout";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useChatState } from "../context/chatprovider";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import { ArrowBackIcon } from "@chakra-ui/icons";
@@ -27,6 +27,40 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [newMessage, setNewMessage] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
 
+  // Memoized fetchMessages function with useCallback
+  const fetchMessages = useCallback(async () => {
+    if (!selectedChat || !user.token) return;
+
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
+
+      setLoading(true);
+      const { data } = await axios.get(
+        `http://localhost:500/api/message/${selectedChat._id}`,
+        config
+      );
+      setMessages(data);
+      setLoading(false);
+      socket.emit("join chat", selectedChat._id);
+      selectedChatCompare = selectedChat;
+
+      // Store messages in local storage to sync across windows
+      localStorage.setItem("messages", JSON.stringify(data));
+    } catch (error) {
+      toast({
+        title: "Error Occurred",
+        description: error.response?.data?.message || error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setLoading(false);
+    }
+  }, [selectedChat, user.token, toast]);
+
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
@@ -34,41 +68,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   }, [user]);
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      if (!selectedChat || !user.token) return;
-
-      try {
-        const config = {
-          headers: { Authorization: `Bearer ${user.token}` },
-        };
-
-        setLoading(true);
-        const { data } = await axios.get(
-          `http://localhost:500/api/message/${selectedChat._id}`,
-          config
-        );
-        setMessages(data);
-        setLoading(false);
-        socket.emit("join chat", selectedChat._id);
-        selectedChatCompare = selectedChat;
-
-        // Store messages in local storage to sync across windows
-        localStorage.setItem("messages", JSON.stringify(data));
-      } catch (error) {
-        toast({
-          title: "Error Occurred",
-          description: error.response?.data?.message || error.message,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-          position: "bottom",
-        });
-        setLoading(false);
-      }
-    };
-
     fetchMessages();
-  }, [selectedChat, user.token, toast]);
+  }, [fetchMessages]);
 
   // Sync messages across tabs/windows
   useEffect(() => {
@@ -175,6 +176,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               <>
                 {selectedChat.chatName.toUpperCase()}
                 <UpdateGroupChatModal
+                  fetchMessages={fetchMessages} // Pass fetchMessages as a prop
                   fetchAgain={fetchAgain}
                   setFetchAgain={setFetchAgain}
                 />
@@ -193,10 +195,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             overflowY="hidden"
           >
             <div className="messages">
-              {Array.isArray(messages) && messages.length > 0 ? (
-                <ScrollableChat messages={messages} />
+              {loading ? (
+                <Spinner size="xl" />
               ) : (
-                <Text>No messages to display.</Text>
+                Array.isArray(messages) && messages.length > 0 ? (
+                  <ScrollableChat messages={messages} />
+                ) : (
+                  <Text>No messages to display.</Text>
+                )
               )}
             </div>
 
