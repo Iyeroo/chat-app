@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js ",
-    "build": "npm install --legacy-peer-deps && npm install --legacy-peer-deps --prefix frontend && npm run build --prefix frontend"
+    "build": "npm install --legacy-peer-deps && npm install --legacy-peer-deps --prefix frontend/Frontend && npm run build --prefix frontend/Frontend"
 
   },
   "author": "",
