@@ -6,12 +6,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js ",
     "build": "npm install --legacy-peer-deps && npm install --legacy-peer-deps --prefix frontend/Frontend && npm run build --prefix frontend/Frontend"
-
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
