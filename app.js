@@ -23,7 +23,7 @@ app.use(cookieParser());
 const PORT = 500;
 const path = require("path");
 const { type } = require("os");
-connectmongodb("mongodb://127.0.0.1:27017/login")
+connectmongodb("mongodb://0.0.0.0:27017/login")
   .then(() => {
     console.log("connected");
   })
@@ -115,7 +115,7 @@ io.on('connection', (socket) => {
 const NODE_ENV="production";
 const _dirname1=path.resolve();
 if(NODE_ENV=="production"){
-  app.use(express.static(path.join(_dirname1,"frontend","Frontend","build")));
+  app.use(expresss.static(path.join(_dirname1,"frontend","Frontend","build")));
   app.get("*",(req,res)=>{
     res.sendFile(path.resolve(_dirname1,"frontend","Frontend","build","index.html"))
   })
