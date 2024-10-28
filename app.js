@@ -11,7 +11,7 @@ const User = require("./models/usermode");
 
 const bodyParser = require("body-parser");
 
-const { connectmongodb } = require("./connection");
+const { connectDB } = require("./connection");
 const { setuser, getuser } = require("./services/auth");
 
 const { restricttologgedinusersonly } = require("./middleware/auth");
@@ -23,13 +23,7 @@ app.use(cookieParser());
 const PORT = 500;
 const path = require("path");
 const { type } = require("os");
-connectmongodb("mongodb://0.0.0.0:27017/login")
-  .then(() => {
-    console.log("connected");
-  })
-  .catch((err) => {
-    console.log("mongo err", err);
-  });
+connectDB();
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 app.use(express.json());
