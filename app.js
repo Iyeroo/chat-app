@@ -115,7 +115,7 @@ io.on('connection', (socket) => {
 const NODE_ENV="production";
 const _dirname1=path.resolve();
 if(NODE_ENV=="production"){
-  app.use(expresss.static(path.join(_dirname1,"frontend","Frontend","build")));
+  app.use(express.static(path.join(_dirname1,"frontend","Frontend","build")));
   app.get("*",(req,res)=>{
     res.sendFile(path.resolve(_dirname1,"frontend","Frontend","build","index.html"))
   })
