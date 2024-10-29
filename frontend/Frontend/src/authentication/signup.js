@@ -20,7 +20,7 @@ function App() {
     setIsSubmit(true);
     
     
-    const {data}= await axios.post("http://localhost:500/api/signup",formValues
+    const {data}= await axios.post("https://chat-app-6-46no.onrender.com/api/signup",formValues
   )
 console.log(data);};
 
