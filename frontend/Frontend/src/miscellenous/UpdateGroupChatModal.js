@@ -57,7 +57,7 @@ const UpdateGroupChatModal = ({fetchAgain,setFetchAgain}) => {
             },
           };
           const { data } = await axios.put(
-            `http://localhost:500/addtogroup`,
+            `https://chat-app-6-bzn0.onrender.com/addtogroup`,
             {
               chatId: selectedChat._id,
               userId: user1._id,
@@ -96,7 +96,7 @@ const UpdateGroupChatModal = ({fetchAgain,setFetchAgain}) => {
         },
       };
       const { data } = await axios.put(
-        `http://localhost:500/rename`,
+        `https://chat-app-6-bzn0.onrender.com/rename`,
         {
           chatId: selectedChat._id,
           chatName: groupChatName,
@@ -136,7 +136,7 @@ const UpdateGroupChatModal = ({fetchAgain,setFetchAgain}) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`http://localhost:500/allusers?search=${search}`, config);
+      const { data } = await axios.get(`https://chat-app-6-bzn0.onrender.com/allusers?search=${search}`, config);
       console.log(data);
       setLoading(false);
       setSearchResult(data);

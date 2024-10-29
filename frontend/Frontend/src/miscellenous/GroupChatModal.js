@@ -45,7 +45,7 @@ try {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`http://localhost:500/allusers?search=${search}`, config);
+      const { data } = await axios.get(`https://chat-app-6-bzn0.onrender.com//allusers?search=${search}`, config);
       console.log(data);
       setLoading(false);
       setSearchResult(data);
@@ -78,7 +78,7 @@ try {
             },
           };
           const { data } = await axios.post(
-            `http://localhost:500/group`,
+            `https://chat-app-6-bzn0.onrender.com/group`,
             {
               name: groupChatName,
               users: JSON.stringify(selectedUsers.map((u) => u._id)),

@@ -15,7 +15,7 @@ import axios from "axios";
 import ProfileModal from "../miscellenous/profilemodel";
 import UpdateGroupChatModal from "./UpdateGroupChatModal";
 
-const ENDPOINT = "http://localhost:500";
+const ENDPOINT = "https://chat-app-6-bzn0.onrender.com";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -38,7 +38,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
       setLoading(true);
       const { data } = await axios.get(
-        `http://localhost:500/api/message/${selectedChat._id}`,
+        `https://chat-app-6-bzn0.onrender.com/api/message/${selectedChat._id}`,
         config
       );
       setMessages(data);
@@ -122,7 +122,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         };
         setNewMessage("");
         const { data } = await axios.post(
-          "http://localhost:500/api/message",
+          "https://chat-app-6-bzn0.onrender.com/api/message",
           { content: newMessage, chatId: selectedChat._id },
           config
         );
