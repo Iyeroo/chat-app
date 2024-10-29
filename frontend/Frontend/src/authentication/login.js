@@ -24,7 +24,7 @@ const history=useHistory();
     setIsSubmit(true);
     
     
-    const {data}= await axios.post("https://chat-app-6-46no.onrender.com/login",formValues
+    const {data}= await axios.post("https://chat-app-6-bzn0.onrender.com/login",formValues
   );
 
   
